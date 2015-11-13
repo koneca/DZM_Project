@@ -23,10 +23,13 @@ Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 uint16_t DspWidth = 0;
 uint16_t DspHeight = 0;
 
+uint16_t xaxis[181] = { 0, 3, 6, 8, 11, 14, 17, 19, 22, 25, 28, 31, 33, 36, 39, 41, 44, 47, 49, 52, 55, 57, 60, 63, 65, 68, 70, 73, 75, 78, 80, 82, 85, 87, 89, 92, 94, 96, 99, 101, 103, 105, 107, 109, 111, 113, 115, 117, 119, 121, 123, 124, 126, 128, 129, 131, 133, 134, 136, 137, 139, 140, 141, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 155, 156, 157, 157, 158, 158, 158, 159, 159, 159, 160, 160, 160, 160, 160, 160, 160, 160, 160, 159, 159, 159, 158, 158, 158, 157, 157, 156, 155, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, 145, 144, 143, 141, 140, 139, 137, 136, 134, 133, 131, 129, 128, 126, 124, 123, 121, 119, 117, 115, 113, 111, 109, 107, 105, 103, 101, 99, 96, 94, 92, 89, 87, 85, 82, 80, 78, 75, 73, 70, 68, 65, 63, 60, 57, 55, 52, 49, 47, 44, 41, 39, 36, 33, 31, 28, 25, 22, 19, 17, 14, 11, 8, 6, 3, 0 };
+uint16_t yaxis[181] = { 320, 320, 320, 320, 320, 319, 319, 319, 318, 318, 318, 317, 317, 316, 315, 315, 314, 313, 312, 311, 310, 309, 308, 307, 306, 305, 304, 303, 301, 300, 299, 297, 296, 294, 293, 291, 289, 288, 286, 284, 283, 281, 279, 277, 275, 273, 271, 269, 267, 265, 263, 261, 259, 256, 254, 252, 249, 247, 245, 242, 240, 238, 235, 233, 230, 228, 225, 223, 220, 217, 215, 212, 209, 207, 204, 201, 199, 196, 193, 191, 188, 185, 182, 179, 177, 174, 171, 168, 166, 163, 160, 157, 154, 152, 149, 146, 143, 141, 138, 135, 132, 129, 127, 124, 121, 119, 116, 113, 111, 108, 105, 103, 100, 97, 95, 92, 90, 87, 85, 82, 80, 78, 75, 73, 71, 68, 66, 64, 61, 59, 57, 55, 53, 51, 49, 47, 45, 43, 41, 39, 37, 36, 34, 32, 31, 29, 27, 26, 24, 23, 21, 20, 19, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 5, 4, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 0, 0};
+
 void setup() {
   Serial.begin(9600);
   Serial.println(F("DZM-Test"));
-  
+
   Serial.print("TFT size is "); Serial.print(tft.width()); Serial.print("x"); Serial.println(tft.height());
 
   tft.reset();
@@ -34,33 +37,29 @@ void setup() {
   tft.fillScreen(BLACK);
   DspWidth = 320;
   DspHeight = tft.height();
-  
+
 }
 
 void loop() {
 
-  uint16_t alpha;
+  int alpha;
 
-  tft.fillCircle(0, DspWidth/2, DspWidth/2-2, RED);
-  tft.drawCircle(0, DspWidth/2, DspWidth/2-1, WHITE);
   
-  for(alpha = 0; alpha < 180; alpha++ )
-  {    
-    
 
-    uint16_t xValue = sin(alpha)*(DspWidth/2-2);
-    uint16_t yValue = cos(alpha)*(DspWidth/2-2) + DspWidth/2;
-      
-    Serial.print("x-Wert ");
-    Serial.print(xValue);
-    Serial.print("\ty-Wert: ");
-    Serial.print(yValue);
-    Serial.print("\talpha: ");
+  for(alpha = 0; alpha <= 180; alpha++ )
+  {
+    tft.fillCircle(0, DspWidth/2, DspWidth/2-2, RED);
+    tft.drawCircle(0, DspWidth/2, DspWidth/2-1, WHITE);
+    Serial.print("x-Wert(int) ");
+    Serial.print(xaxis[alpha]);
+    Serial.print("\ty-Wert(int) ");
+    Serial.print(yaxis[alpha]);
+    Serial.print("\talpha(float) ");
     Serial.println(alpha);
-    
-    
-    tft.drawLine(0, DspWidth/2, xValue, yValue, BLUE);
-    delay(500);
+    Serial.println("----------------------------------");
+
+    tft.drawLine(0, DspWidth/2, xaxis[alpha], yaxis[alpha], BLUE);
+    //delay(100);
   }
 
 }
